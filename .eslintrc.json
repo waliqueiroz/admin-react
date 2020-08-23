@@ -36,6 +36,7 @@
         ]
       }
     ],
+    "react/jsx-one-expression-per-line": "off",
     "import/prefer-default-export": "off",
     "import/extensions": [
       "error",
@@ -54,6 +55,15 @@
             "id"
           ]
         }
+      }
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": [
+          "draft"
+        ]
       }
     ]
   },

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ElementType } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 
 import Template from '../components/Template';
 
@@ -18,14 +18,14 @@ const RouterWrapper: React.FC<RouterWrapperProps> = ({
   description,
   ...rest
 }) => {
-  const signed = true;
+  const signed = false;
 
   if (!signed && isPrivate) {
-    // return <Redirect to="/login" />;
+    return <Redirect to="/login" />;
   }
 
   if (signed && !isPrivate) {
-    // return <Redirect to="/" />;
+    return <Redirect to="/" />;
   }
 
   if (signed) {
