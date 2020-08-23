@@ -9,11 +9,13 @@ interface RouterWrapperProps {
   component: ElementType;
   path: string;
   exact?: boolean;
+  description?: string;
 }
 
 const RouterWrapper: React.FC<RouterWrapperProps> = ({
   component: Component,
   isPrivate,
+  description,
   ...rest
 }) => {
   const signed = true;
@@ -31,7 +33,7 @@ const RouterWrapper: React.FC<RouterWrapperProps> = ({
       <Route
         {...rest}
         render={(props) => (
-          <Template>
+          <Template description={description}>
             <Component {...props} />
           </Template>
         )}

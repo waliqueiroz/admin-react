@@ -4,7 +4,11 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 import Sidebar from '../Sidebar';
 
-const Template: React.FC = ({ children }) => {
+interface TemplateProps {
+  description?: string;
+}
+
+const Template: React.FC<TemplateProps> = ({ children, description }) => {
   return (
     <div className="wrapper">
       <Navbar />
@@ -14,7 +18,7 @@ const Template: React.FC = ({ children }) => {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1 className="m-0 text-dark">XIblaubla</h1>
+                <h1 className="m-0 text-dark">{description}</h1>
               </div>
             </div>
           </div>

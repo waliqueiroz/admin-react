@@ -8,7 +8,13 @@ import Login from '../pages/Login';
 const Routes: React.FC = () => {
   return (
     <Switch>
-      <Route exact path="/" component={Home} isPrivate />
+      <Route
+        exact
+        path="/"
+        component={Home}
+        isPrivate
+        description="Fluxo de aprovação"
+      />
       <Route path="/login" component={Login} />
     </Switch>
   );
