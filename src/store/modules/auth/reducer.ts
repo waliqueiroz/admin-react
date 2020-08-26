@@ -15,6 +15,7 @@ export default function auth(
     switch (action.type) {
       case AuthTypes.SIGN_IN_SUCCESS:
         draft.token = action.payload.token;
+        draft.user = action.payload.user;
         draft.signed = true;
         break;
       case AuthTypes.SIGN_OUT:

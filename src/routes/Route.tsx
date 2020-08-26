@@ -1,8 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { ElementType } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Template from '../components/Template';
+import { RootState } from '../store';
 
 interface RouterWrapperProps {
   isPrivate?: boolean;
@@ -18,7 +20,7 @@ const RouterWrapper: React.FC<RouterWrapperProps> = ({
   description,
   ...rest
 }) => {
-  const signed = false;
+  const signed = useSelector<RootState, boolean>((state) => state.auth.signed);
 
   if (!signed && isPrivate) {
     return <Redirect to="/login" />;

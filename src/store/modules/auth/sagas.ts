@@ -14,13 +14,6 @@ export function* signIn(action: SignInRequestAction) {
 
     const response = yield call(api.post, 'login', { email, password });
 
-    if (response.status === 401) {
-      toast.error(
-        'Credenciais inválidas, verifique seus dados e tente novamenete.',
-      );
-      return;
-    }
-
     const { access_token: token } = response.data;
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
@@ -31,16 +24,9 @@ export function* signIn(action: SignInRequestAction) {
 
     history.push('/');
   } catch (error) {
-    if (error.response.status === 401) {
-      if (
-        error.response.data.message &&
-        !error.response.data.message.includes('Unauthenticated')
-      ) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error('Usuário ou senha inválidos');
-      }
-    }
+    toast.error(
+      'Credenciais inválidas, verifique seus dados e tente novamente.',
+    );
   }
 }
 
@@ -48,7 +34,7 @@ export function setToken(action: RehydrateAction) {
   if (!action.payload) return;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { token } = (<any>action).payload.auth;
+  const { token } = (action as any).payload.auth;
 
   if (token) {
     api.defaults.headers.Authorization = `Bearer ${token}`;

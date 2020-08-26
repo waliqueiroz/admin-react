@@ -5,6 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 import Routes from './routes';
 import { store, persistor } from './store';
 import history from './services/history';
