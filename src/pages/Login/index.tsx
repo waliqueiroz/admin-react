@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
+import { useDispatch } from 'react-redux';
+import { signInRequest } from '../../store/modules/auth/actions';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
-  function handleSingIn() {}
+  function handleSingIn(e: FormEvent) {
+    e.preventDefault();
+    dispatch(signInRequest(email, password));
+  }
 
   return (
     <div className="hold-transition login-page">

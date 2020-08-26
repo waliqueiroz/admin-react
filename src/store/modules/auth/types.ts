@@ -11,41 +11,37 @@ export interface User {
 export interface AuthState {
   token: string | null;
   user: User | null;
-  loading: boolean;
   signed: boolean;
 }
 
-export const SIGN_IN_REQUEST = '@auth/SIGN_IN_REQUEST';
-export const SIGN_IN_SUCCESS = '@auth/SIGN_IN_SUCCESS';
-export const SIGN_FALIURE = '@auth/SIGN_FALIURE';
-export const SIGN_OUT = '@auth/SIGN_OUT';
+export enum AuthTypes {
+  SIGN_IN_REQUEST = '@auth/SIGN_IN_REQUEST',
+  SIGN_IN_SUCCESS = '@auth/SIGN_IN_SUCCESS',
+  SIGN_FALIURE = '@auth/SIGN_FALIURE',
+  SIGN_OUT = '@auth/SIGN_OUT',
+}
 
-interface SignInRequestAction {
-  type: typeof SIGN_IN_REQUEST;
+export interface SignInRequestAction {
+  type: typeof AuthTypes.SIGN_IN_REQUEST;
   payload: {
     email: string;
     password: string;
   };
 }
 
-interface SignInSuccessAction {
-  type: typeof SIGN_IN_SUCCESS;
+export interface SignInSuccessAction {
+  type: typeof AuthTypes.SIGN_IN_SUCCESS;
   payload: {
     token: string;
     user: User;
   };
 }
 
-interface SignFaliureAction {
-  type: typeof SIGN_FALIURE;
-}
-
-interface SignOutAction {
-  type: typeof SIGN_OUT;
+export interface SignOutAction {
+  type: typeof AuthTypes.SIGN_OUT;
 }
 
 export type AuthActionTypes =
   | SignInRequestAction
   | SignInSuccessAction
-  | SignFaliureAction
   | SignOutAction;
