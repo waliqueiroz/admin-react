@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '../../store';
@@ -46,22 +46,35 @@ const Sidebar: React.FC = () => {
             data-accordion="false"
           >
             <li v-if="hasPermission('product.index')" className="nav-item">
-              <Link to="/" className="nav-link">
+              <NavLink
+                exact
+                activeClassName="active"
+                to="/"
+                className="nav-link"
+              >
                 <i className="fas fa-home nav-icon" />
                 <p>Início</p>
-              </Link>
+              </NavLink>
             </li>
             <li v-if="hasPermission('product.index')" className="nav-item">
-              <Link to="/products" className="nav-link">
+              <NavLink
+                activeClassName="active"
+                to="/products"
+                className="nav-link"
+              >
                 <i className="far fa-circle nav-icon" />
                 <p>Produtos</p>
-              </Link>
+              </NavLink>
             </li>
             <li v-if="hasPermission('user.index')" className="nav-item">
-              <Link to="/users" className="nav-link">
+              <NavLink
+                activeClassName="active"
+                to="/users"
+                className="nav-link"
+              >
                 <i className="far fa-user nav-icon" />
                 <p>Usuários</p>
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </nav>
