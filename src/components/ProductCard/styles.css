@@ -1,0 +1,8 @@
+.card-img-top {
+  width: 100%;
+  height: 15vw;
+  object-fit: cover;
+}
+.list-group-flush .list-group-item:first-child {
+  border-top-width: thin;
+}

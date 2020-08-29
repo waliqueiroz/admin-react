@@ -1,8 +1,76 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/jsx-one-expression-per-line */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Pagination from 'react-js-pagination';
+
+import api from '../../services/api';
+import ProductCard, { Product } from '../../components/ProductCard';
+
+export interface Status {
+  id: number;
+  name: string;
+}
+
+export interface Products {
+  current_page: number;
+  data: Array<Product>;
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  next_page_url: number | null;
+  path: string;
+  per_page: number;
+  prev_page_url: number | null;
+  to: number;
+  total: number;
+}
 
 const ProductList: React.FC = () => {
+  const [statuses, setStatuses] = useState([]);
+  const [products, setProducts] = useState<Products | undefined>();
+  const [status_id, setStatusId] = useState('');
+  const [name, setName] = useState('');
+  const [price_min, setPriceMin] = useState('');
+  const [price_max, setPriceMax] = useState('');
+
+  async function getStatuses() {
+    const response = await api.get('/statuses');
+    setStatuses(response.data);
+  }
+
+  async function getProducts(filters = {}) {
+    const response = await api.get('/products', { params: filters });
+    setProducts(response.data);
+  }
+
+  function handleFilterProducts(page = 1) {
+    const filters = {
+      status_id,
+      price_min,
+      price_max,
+      name,
+      page,
+      paginate: true,
+    };
+
+    getProducts(filters);
+  }
+
+  function cleanFilters() {
+    setStatusId('');
+    setName('');
+    setPriceMin('');
+    setPriceMax('');
+    getProducts();
+  }
+
+  useEffect(() => {
+    getStatuses();
+    getProducts({ paginate: true });
+  }, []);
+
   return (
     <div className="card card-default">
       <div className="card-header">
@@ -17,7 +85,12 @@ const ProductList: React.FC = () => {
       </div>
 
       <div className="card-body">
-        <form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleFilterProducts();
+          }}
+        >
           <div className="row">
             <div className="col-sm-3 form-group">
               <label htmlFor="name">Nome</label>
@@ -25,7 +98,10 @@ const ProductList: React.FC = () => {
                 id="name"
                 type="text"
                 className="form-control"
-                v-model="filters.name"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
               />
             </div>
 
@@ -36,7 +112,10 @@ const ProductList: React.FC = () => {
                 step="0.01"
                 type="number"
                 className="form-control"
-                v-model="filters.price_min"
+                value={price_min}
+                onChange={(e) => {
+                  setPriceMin(e.target.value);
+                }}
               />
             </div>
 
@@ -47,7 +126,10 @@ const ProductList: React.FC = () => {
                 step="0.01"
                 type="number"
                 className="form-control"
-                v-model="filters.price_max"
+                value={price_max}
+                onChange={(e) => {
+                  setPriceMax(e.target.value);
+                }}
               />
             </div>
 
@@ -56,20 +138,29 @@ const ProductList: React.FC = () => {
               <select
                 id="status"
                 className="form-control"
-                v-model="filters.status_id"
+                value={status_id}
+                onChange={(e) => {
+                  setStatusId(e.target.value);
+                }}
               >
                 <option value="">Todos os status</option>
+                {statuses.map((status: Status) => (
+                  <option key={status.id} value={status.id}>
+                    {status.name}
+                  </option>
+                ))}
               </select>
             </div>
 
             <div className="col-sm-2 form-group align-self-end">
-              <button type="button" className="btn btn-default btn-block">
+              <button type="submit" className="btn btn-default btn-block">
                 <span className="fas fa-filter" /> Filtrar
               </button>
             </div>
 
             <div className="col-sm-1 form-group align-self-end">
               <button
+                onClick={cleanFilters}
                 type="button"
                 title="Limpar filtros"
                 className="btn btn-default btn-block"
@@ -79,6 +170,48 @@ const ProductList: React.FC = () => {
             </div>
           </div>
         </form>
+        <div className="row">
+          {products?.data.map((product) => (
+            <div
+              key={product.id}
+              className="col-sm-2 d-flex align-items-stretch"
+            >
+              <ProductCard product={product}>
+                <Link
+                  to={`/products/${product.id}/edit`}
+                  className="btn btn-sm btn-info btn-block"
+                >
+                  <span className="far fa-edit" /> Editar
+                </Link>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-danger btn-block"
+                >
+                  <span className="fas fa-trash" /> Excluir
+                </button>
+              </ProductCard>
+            </div>
+          ))}
+        </div>
+        <div className="row align-items-center">
+          <div className="col-sm-5">
+            Mostrando {products?.from} até {products?.to} de {products?.total}{' '}
+            produtos encontrados.
+          </div>
+          <div className="col-sm-7 ml-auto">
+            <div className="float-right">
+              <Pagination
+                itemClass="page-item"
+                linkClass="page-link"
+                activePage={products?.current_page as number}
+                itemsCountPerPage={products?.per_page}
+                totalItemsCount={products?.total as number}
+                pageRangeDisplayed={5}
+                onChange={handleFilterProducts}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
