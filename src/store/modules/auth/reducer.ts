@@ -23,6 +23,9 @@ export default function auth(
         draft.user = null;
         draft.signed = false;
         break;
+      case AuthTypes.SET_TOKEN:
+        draft.token = action.payload.token;
+        break;
       default:
     }
   });

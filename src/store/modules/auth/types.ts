@@ -21,6 +21,7 @@ export enum AuthTypes {
   SIGN_IN_SUCCESS = '@auth/SIGN_IN_SUCCESS',
   SIGN_FALIURE = '@auth/SIGN_FALIURE',
   SIGN_OUT = '@auth/SIGN_OUT',
+  SET_TOKEN = '@auth/SET_TOKEN',
 }
 
 export interface SignInRequestAction {
@@ -42,8 +43,15 @@ export interface SignInSuccessAction {
 export interface SignOutAction {
   type: typeof AuthTypes.SIGN_OUT;
 }
+export interface SetTokenAction {
+  type: typeof AuthTypes.SET_TOKEN;
+  payload: {
+    token: string;
+  };
+}
 
 export type AuthActionTypes =
   | SignInRequestAction
   | SignInSuccessAction
-  | SignOutAction;
+  | SignOutAction
+  | SetTokenAction;

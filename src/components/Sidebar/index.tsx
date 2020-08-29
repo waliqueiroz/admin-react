@@ -1,10 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+import { RootState } from '../../store';
+import { User } from '../../store/modules/auth/types';
 import adminImg from '../../assets/img/AdminLTELogo.png';
 import userDefault from '../../assets/img/img_default.png';
 
 const Sidebar: React.FC = () => {
+  const user = useSelector<RootState, User | null>((state) => state.auth.user);
+
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
       <a href="a" className="brand-link">
@@ -28,7 +33,7 @@ const Sidebar: React.FC = () => {
           </div>
           <div className="info">
             <a href="a" className="d-block">
-              Adminho
+              {user?.name}
             </a>
           </div>
         </div>

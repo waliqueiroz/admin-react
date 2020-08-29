@@ -22,3 +22,10 @@ export function signOut(): AuthActionTypes {
     type: AuthTypes.SIGN_OUT,
   };
 }
+
+export function setToken(token: string): AuthActionTypes {
+  return {
+    type: AuthTypes.SET_TOKEN,
+    payload: { token },
+  };
+}
