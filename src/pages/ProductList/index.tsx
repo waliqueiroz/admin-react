@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 
+import Swal from 'sweetalert2';
 import api from '../../services/api';
 import ProductCard, { Product } from '../../components/ProductCard';
+import { showSuccessMessage, showErrorMessages } from '../../util/helpers';
 
 export interface Status {
   id: number;
@@ -64,6 +66,29 @@ const ProductList: React.FC = () => {
     setPriceMin('');
     setPriceMax('');
     getProducts();
+  }
+
+  function destroy(product: Product) {
+    Swal.fire({
+      title: `Excluir o produto "${product.name}"?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '<i class="fas fa-check"></i> Confirmar',
+      cancelButtonText: '<i class="fas fa-times"></i> Cancelar',
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.value) {
+        try {
+          await api.delete(`/products/${product.id}`);
+          showSuccessMessage(`${product.name} excluído com sucesso!`);
+          getProducts({ paginate: true });
+        } catch (error) {
+          showErrorMessages(error);
+        }
+      }
+    });
   }
 
   useEffect(() => {
@@ -184,6 +209,7 @@ const ProductList: React.FC = () => {
                   <span className="far fa-edit" /> Editar
                 </Link>
                 <button
+                  onClick={() => destroy(product)}
                   type="button"
                   className="btn btn-sm btn-danger btn-block"
                 >
@@ -203,9 +229,9 @@ const ProductList: React.FC = () => {
               <Pagination
                 itemClass="page-item"
                 linkClass="page-link"
-                activePage={products?.current_page as number}
+                activePage={products?.current_page ?? 1}
                 itemsCountPerPage={products?.per_page}
-                totalItemsCount={products?.total as number}
+                totalItemsCount={products?.total ?? 0}
                 pageRangeDisplayed={5}
                 onChange={handleFilterProducts}
               />

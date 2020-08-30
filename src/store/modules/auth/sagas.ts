@@ -2,7 +2,7 @@
 import { all, put, call, takeLatest } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 import { REHYDRATE, RehydrateAction } from 'redux-persist';
-import { SignInRequestAction, AuthTypes } from './types';
+import { SignInRequestAction, AuthTypes, SetTokenAction } from './types';
 import { signInSuccess } from './actions';
 
 import api from '../../../services/api';
@@ -30,11 +30,16 @@ export function* signIn(action: SignInRequestAction) {
   }
 }
 
-export function setToken(action: RehydrateAction) {
+export function setToken(action: RehydrateAction | SetTokenAction) {
   if (!action.payload) return;
+  let token = '';
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { token } = (action as any).payload.auth;
+  if (action.type === REHYDRATE) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    token = (action as any).payload.auth.token;
+  } else {
+    token = action.payload.token;
+  }
 
   if (token) {
     api.defaults.headers.Authorization = `Bearer ${token}`;
@@ -47,6 +52,7 @@ export function signOut() {
 
 export default all([
   takeLatest(REHYDRATE, setToken),
+  takeLatest(AuthTypes.SET_TOKEN, setToken),
   takeLatest(AuthTypes.SIGN_IN_REQUEST, signIn),
   takeLatest(AuthTypes.SIGN_OUT, signOut),
 ]);
