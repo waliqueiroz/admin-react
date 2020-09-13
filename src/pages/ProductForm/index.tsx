@@ -92,7 +92,6 @@ const ProductForm: React.FC = () => {
                   setName(e.target.value);
                 }}
                 id="name"
-                v-model="product.name"
                 required
                 type="text"
                 className="form-control"
@@ -106,7 +105,6 @@ const ProductForm: React.FC = () => {
                   setPrice(e.target.value);
                 }}
                 id="price"
-                v-model="product.price"
                 required
                 type="number"
                 step="0.01"

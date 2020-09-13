@@ -7,6 +7,7 @@ import Login from '../pages/Login';
 import ProductList from '../pages/ProductList';
 import ProductForm from '../pages/ProductForm';
 import UserList from '../pages/UserList';
+import UserForm from '../pages/UserForm';
 
 const Routes: React.FC = () => {
   return (
@@ -45,20 +46,20 @@ const Routes: React.FC = () => {
         path="/users"
         component={UserList}
         isPrivate
-        description="Produtos"
+        description="Usuários"
       />
-      {/* <Route
+      <Route
         path="/users/create"
-        component={ProductForm}
+        component={UserForm}
         isPrivate
-        description="Produtos"
+        description="Usuários"
       />
       <Route
         path="/users/:id/edit"
-        component={ProductForm}
+        component={UserForm}
         isPrivate
-        description="Produtos"
-      /> */}
+        description="Usuários"
+      />
     </Switch>
   );
 };

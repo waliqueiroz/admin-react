@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 
+import Swal from 'sweetalert2';
 import api from '../../services/api';
 import { User, Role } from '../../store/modules/auth/types';
 import { roles } from '../../util/constants';
+import { showSuccessMessage, showErrorMessages } from '../../util/helpers';
 
 export interface Users {
   current_page: number;
@@ -56,6 +58,29 @@ const UserList: React.FC = () => {
     getUsers({ paginate: true });
   }, []);
 
+  function destroy(user: User) {
+    Swal.fire({
+      title: `Excluir o usuário "${user.name}"?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '<i class="fas fa-check"></i> Confirmar',
+      cancelButtonText: '<i class="fas fa-times"></i> Cancelar',
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.value) {
+        try {
+          await api.delete(`/users/${user.id}`);
+          showSuccessMessage(`${user.name} excluído com sucesso!`);
+          getUsers({ paginate: true });
+        } catch (error) {
+          showErrorMessages(error);
+        }
+      }
+    });
+  }
+
   return (
     <div className="card card-default">
       <div className="card-header">
@@ -82,7 +107,6 @@ const UserList: React.FC = () => {
                 id="name"
                 type="text"
                 className="form-control"
-                v-model="filters.name"
               />
             </div>
 
@@ -96,7 +120,6 @@ const UserList: React.FC = () => {
                 id="email"
                 type="text"
                 className="form-control"
-                v-model="filters.email"
               />
             </div>
 
@@ -165,6 +188,9 @@ const UserList: React.FC = () => {
                     </Link>
 
                     <button
+                      onClick={() => {
+                        destroy(user);
+                      }}
                       type="button"
                       title="Excluir"
                       className="btn btn-danger"
