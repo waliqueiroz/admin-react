@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Pagination from 'react-js-pagination';
+
 import api from '../../services/api';
 import { User, Role } from '../../store/modules/auth/types';
 import { roles } from '../../util/constants';
@@ -175,14 +177,25 @@ const UserList: React.FC = () => {
             ))}
           </tbody>
         </table>
-        <div className="row">
-          {/* <div className="col-sm-5">Mostrando {{ users.from }} até {{ users.to }} de {{ users.total }} usuários encontrados.</div>
-                <div className="col-sm-7">
-                    <laravue-pagination align="right" limit="5" data="users" v-on:pagination-change-page="getUsers">
-                        <span slot="prev-nav">&lt; Anterior</span>
-                        <span slot="next-nav">Próximo &gt;</span>
-                    </laravue-pagination>
-                </div> */}
+        <br />
+        <div className="row align-items-center">
+          <div className="col-sm-5">
+            Mostrando {users?.from} até {users?.to} de {users?.total} produtos
+            encontrados.
+          </div>
+          <div className="col-sm-7 ml-auto">
+            <div className="float-right">
+              <Pagination
+                itemClass="page-item"
+                linkClass="page-link"
+                activePage={users?.current_page ?? 1}
+                itemsCountPerPage={users?.per_page}
+                totalItemsCount={users?.total ?? 0}
+                pageRangeDisplayed={5}
+                onChange={handleFilterUsers}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
