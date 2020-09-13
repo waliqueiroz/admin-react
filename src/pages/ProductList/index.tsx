@@ -65,7 +65,7 @@ const ProductList: React.FC = () => {
     setName('');
     setPriceMin('');
     setPriceMax('');
-    getProducts();
+    getProducts({ paginate: true });
   }
 
   function destroy(product: Product) {

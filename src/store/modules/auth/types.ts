@@ -1,10 +1,15 @@
 /* eslint-disable camelcase */
+
+export interface Role {
+  id: number;
+  name: string;
+}
 export interface User {
   id: number;
   name: string;
   email: string;
-  roles: Array<string>;
-  permissions: Array<string>;
+  roles: Array<string> | Array<Role>;
+  permissions?: Array<string>;
   email_verified_at?: string;
   created_at: string;
   updated_at: string;

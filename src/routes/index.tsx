@@ -6,6 +6,7 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import ProductList from '../pages/ProductList';
 import ProductForm from '../pages/ProductForm';
+import UserList from '../pages/UserList';
 
 const Routes: React.FC = () => {
   return (
@@ -38,6 +39,26 @@ const Routes: React.FC = () => {
         isPrivate
         description="Produtos"
       />
+
+      <Route
+        exact
+        path="/users"
+        component={UserList}
+        isPrivate
+        description="Produtos"
+      />
+      {/* <Route
+        path="/users/create"
+        component={ProductForm}
+        isPrivate
+        description="Produtos"
+      />
+      <Route
+        path="/users/:id/edit"
+        component={ProductForm}
+        isPrivate
+        description="Produtos"
+      /> */}
     </Switch>
   );
 };
