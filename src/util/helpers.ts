@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2';
 import { AxiosError } from 'axios';
+import { store } from '../store';
 
 export function showErrorMessages(error: AxiosError): void {
   let messages = '';
@@ -26,4 +27,9 @@ export function showSuccessMessage(message: string): void {
     showConfirmButton: false,
     timer: 1500,
   });
+}
+
+export function hasPermission(permisson: string): boolean {
+  const { user } = store.getState().auth;
+  return user.permissions.indexOf(permisson) > -1;
 }
