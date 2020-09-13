@@ -12,14 +12,16 @@ import UserForm from '../pages/UserForm';
 const Routes: React.FC = () => {
   return (
     <Switch>
+      <Route path="/login" component={Login} />
+
       <Route
         exact
         path="/"
         component={Home}
         isPrivate
         description="Fluxo de aprovação"
+        routePermissions={['product.index']}
       />
-      <Route path="/login" component={Login} />
 
       <Route
         exact
@@ -27,18 +29,21 @@ const Routes: React.FC = () => {
         component={ProductList}
         isPrivate
         description="Produtos"
+        routePermissions={['product.index']}
       />
       <Route
         path="/products/create"
         component={ProductForm}
         isPrivate
         description="Produtos"
+        routePermissions={['product.store']}
       />
       <Route
         path="/products/:id/edit"
         component={ProductForm}
         isPrivate
         description="Produtos"
+        routePermissions={['product.update']}
       />
 
       <Route
@@ -47,18 +52,21 @@ const Routes: React.FC = () => {
         component={UserList}
         isPrivate
         description="Usuários"
+        routePermissions={['user.index']}
       />
       <Route
         path="/users/create"
         component={UserForm}
         isPrivate
         description="Usuários"
+        routePermissions={['user.store']}
       />
       <Route
         path="/users/:id/edit"
         component={UserForm}
         isPrivate
         description="Usuários"
+        routePermissions={['user.update']}
       />
     </Switch>
   );

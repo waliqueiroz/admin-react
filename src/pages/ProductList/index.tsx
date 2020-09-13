@@ -7,7 +7,11 @@ import Pagination from 'react-js-pagination';
 import Swal from 'sweetalert2';
 import api from '../../services/api';
 import ProductCard, { Product } from '../../components/ProductCard';
-import { showSuccessMessage, showErrorMessages } from '../../util/helpers';
+import {
+  showSuccessMessage,
+  showErrorMessages,
+  hasPermission,
+} from '../../util/helpers';
 
 export interface Status {
   id: number;
@@ -208,13 +212,16 @@ const ProductList: React.FC = () => {
                 >
                   <span className="far fa-edit" /> Editar
                 </Link>
-                <button
-                  onClick={() => destroy(product)}
-                  type="button"
-                  className="btn btn-sm btn-danger btn-block"
-                >
-                  <span className="fas fa-trash" /> Excluir
-                </button>
+
+                {hasPermission('product.approveOrDisapprove') && (
+                  <button
+                    onClick={() => destroy(product)}
+                    type="button"
+                    className="btn btn-sm btn-danger btn-block"
+                  >
+                    <span className="fas fa-trash" /> Excluir
+                  </button>
+                )}
               </ProductCard>
             </div>
           ))}

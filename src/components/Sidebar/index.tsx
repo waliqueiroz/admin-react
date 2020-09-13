@@ -6,6 +6,7 @@ import { RootState } from '../../store';
 import { User } from '../../store/modules/auth/types';
 import adminImg from '../../assets/img/AdminLTELogo.png';
 import userDefault from '../../assets/img/img_default.png';
+import { hasPermission } from '../../util/helpers';
 
 const Sidebar: React.FC = () => {
   const user = useSelector<RootState, User | null>((state) => state.auth.user);
@@ -45,37 +46,45 @@ const Sidebar: React.FC = () => {
             role="menu"
             data-accordion="false"
           >
-            <li v-if="hasPermission('product.index')" className="nav-item">
-              <NavLink
-                exact
-                activeClassName="active"
-                to="/"
-                className="nav-link"
-              >
-                <i className="fas fa-home nav-icon" />
-                <p>Início</p>
-              </NavLink>
-            </li>
-            <li v-if="hasPermission('product.index')" className="nav-item">
-              <NavLink
-                activeClassName="active"
-                to="/products"
-                className="nav-link"
-              >
-                <i className="far fa-circle nav-icon" />
-                <p>Produtos</p>
-              </NavLink>
-            </li>
-            <li v-if="hasPermission('user.index')" className="nav-item">
-              <NavLink
-                activeClassName="active"
-                to="/users"
-                className="nav-link"
-              >
-                <i className="far fa-user nav-icon" />
-                <p>Usuários</p>
-              </NavLink>
-            </li>
+            {hasPermission('product.index') && (
+              <li className="nav-item">
+                <NavLink
+                  exact
+                  activeClassName="active"
+                  to="/"
+                  className="nav-link"
+                >
+                  <i className="fas fa-home nav-icon" />
+                  <p>Início</p>
+                </NavLink>
+              </li>
+            )}
+
+            {hasPermission('product.index') && (
+              <li className="nav-item">
+                <NavLink
+                  activeClassName="active"
+                  to="/products"
+                  className="nav-link"
+                >
+                  <i className="far fa-circle nav-icon" />
+                  <p>Produtos</p>
+                </NavLink>
+              </li>
+            )}
+
+            {hasPermission('user.index') && (
+              <li className="nav-item">
+                <NavLink
+                  activeClassName="active"
+                  to="/users"
+                  className="nav-link"
+                >
+                  <i className="far fa-user nav-icon" />
+                  <p>Usuários</p>
+                </NavLink>
+              </li>
+            )}
           </ul>
         </nav>
       </div>

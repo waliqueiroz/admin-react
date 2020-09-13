@@ -60,7 +60,7 @@ const TabContent: React.FC<TapContentProps> = ({ statusId }) => {
             status_id: currentStatusId,
           });
           showSuccessMessage(`Operação realizada com sucesso!`);
-          getProducts({ status_id: statusId, paginate: true });
+          window.location.reload();
         } catch (error) {
           showErrorMessages(error);
         }
